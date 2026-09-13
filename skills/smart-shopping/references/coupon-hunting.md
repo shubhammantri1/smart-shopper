@@ -21,7 +21,11 @@ Note 2-4 candidate codes with their claimed discount, rather than one. Aggregato
 
 ## Step 4: Try each candidate at checkout
 
-At the checkout or cart promo-code field, enter each candidate in turn and check for a success or failure message before moving to the next. Stop as soon as one applies. Report:
+At the checkout or cart promo-code field, enter each candidate in turn and check for a success or failure message before moving to the next. Stop as soon as one applies.
+
+**This step never requires going further than reading the updated price after entering a code.** Do not click any final purchase, place-order, or payment-submission control at any point in this workflow, and never enter payment details — that boundary holds even when a code successfully applies and the total looks final and ready to pay.
+
+Report:
 - Which code applied and the actual discount amount observed at checkout (not the claimed discount from the aggregator page, which may differ).
 - If none applied, say so plainly rather than presenting an untested code as a working discount.
 

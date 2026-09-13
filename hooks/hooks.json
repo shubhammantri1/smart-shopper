@@ -1,0 +1,13 @@
+{
+  "Stop": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/verify-shopping-checklist.sh",
+          "timeout": 10
+        }
+      ]
+    }
+  ]
+}

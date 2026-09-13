@@ -7,14 +7,22 @@ before payment so you finish the purchase yourself.
 
 ## What it does
 
-- Searches and compares products/services across the sites relevant to your request
+- Dispatches one subagent per platform (Amazon, Flipkart, Meesho, whatever you name or have saved as a preference) to search and compare **in parallel**, instead of researching sites one at a time
+- Treats any platform you explicitly name as mandatory — it won't quietly drop one because another site "seemed to have better reviews"
 - Pulls real reviews and recurring complaints from Reddit/forums alongside marketplace listings
 - Hunts for a working coupon code by discovering and testing candidates at checkout
-- Computes card-cashback-adjusted pricing if you've told it about a card's reward terms
+- Asks what card(s) you hold if it doesn't already know, so cashback/bank-offer discounts don't get missed, and computes the card-adjusted effective price
 - Presents categorized recommendations (Cheapest / Best Value / Best Reviewed / Closest Match) with the reasoning shown, not a single unexplained pick
+- Writes recommendations in plain, everyday language — no unexplained jargon
 - Remembers durable profile facts (name, address, card *type* and reward terms, standing preferences) so you're not re-asked every session
 - Never remembers what you searched for or bought — only identity and preference facts
-- Never enters payment details or completes a checkout — it stops and hands off to you
+- **Never places an order or enters payment details, under any circumstance** — a Stop hook (`hooks/`) deterministically blocks the response from ending until the mandatory research/coupon/card-check steps for the task actually happened, rather than relying on the model remembering to do them
+
+## How it's built
+
+- `skills/smart-shopping/` — the orchestrating skill: loads your profile, works out what's missing, dispatches subagents, merges their findings, hunts coupons, writes the recommendation
+- `agents/platform-researcher.md` — the subagent launched once per platform; scoped to research only, never past a product/listing page
+- `hooks/` — a Stop hook that enforces the task checklist (platforms researched, coupon search attempted, payment method checked, recommendation delivered) before letting a shopping response finish
 
 ## Install
 

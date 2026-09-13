@@ -37,3 +37,18 @@ Where relevant, fold in the coupon-adjusted price from `coupon-hunting.md` and t
 ## When evidence is thin
 
 If review counts are very low (single digits) or conflicting, say so explicitly rather than treating a 5-star rating with 3 reviews as equivalent to a 4.2-star rating with 2,000 reviews. Small-sample ratings are noisy; call that out as part of the rationale, not as a footnote.
+
+## Writing style: plain language, always
+
+Write the whole recommendation — table, rationale, and any surrounding explanation — in plain, everyday words. The goal is that someone with no shopping or finance background can read it once and immediately understand the trade-offs.
+
+- Use short sentences. Split a long one into two rather than adding a comma.
+- Use common words over technical ones: "the discount only works up to ₹1,000 a month" instead of "the cashback accrual is capped at a monthly ceiling of ₹1,000."
+- If a term can't be avoided (coupon, cashback cap, bank offer), explain it in a few plain words the first time it's used, right where it appears — not in a glossary at the end.
+- Avoid stacking qualifiers and hedges ("potentially fairly reasonably good value") — say what was actually found, plainly.
+- Numbers and comparisons should be easy to scan: round where rounding doesn't lose meaning, and put the most important fact first in each rationale rather than burying it after context.
+
+Example:
+
+- Plain: "Cheapest option. Costs ₹4,949 after using the FIRST10 code. Only 18 people have rated it, so it's a bit of an unknown."
+- Not plain: "This represents the most cost-effective option post-discount-code-application, though the limited review corpus (n=18) introduces some uncertainty regarding aggregate reliability."
