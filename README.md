@@ -79,7 +79,9 @@ See `skills/smart-shopping/references/profile-schema.md` for the exact schema an
   (onboarding, platform discovery, coupon hunting, the recommendation format, cart
   preparation, and memory learning)
 - `agents/platform-researcher.md` — the subagent launched once per confirmed platform;
-  scoped to research only, never past a product/listing page
+  scoped to research only, never past a product/listing page; runs on a fast, inexpensive
+  model (`haiku`) at moderate effort rather than the orchestrator's own model, since this
+  is mechanical browse-and-extract work, not deep reasoning
 - `hooks/` — a Stop hook that deterministically blocks a shopping response from ending
   until the task's mandatory steps (platform research, coupon search, payment-method
   check, delivering the recommendation) have actually happened, unless the flow is

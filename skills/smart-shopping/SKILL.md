@@ -46,7 +46,7 @@ Skipped whenever the user already named specific platforms (Step 1's hard rule a
 
 ## Step 3: Dispatch one subagent per confirmed platform
 
-For each platform on the confirmed list (from Step 1's named platforms or Step 2's user-selected shortlist), launch one `platform-researcher` subagent — as a single batch of parallel Agent tool calls in the same response, not one after another. Give each a focused, self-contained prompt: the platform, the product/service description, and the constraints from Step 1. Tell each subagent explicitly not to go past the product/listing page.
+For each platform on the confirmed list (from Step 1's named platforms or Step 2's user-selected shortlist), launch one `platform-researcher` subagent — as a single batch of parallel Agent tool calls in the same response, not one after another. Give each a focused, self-contained prompt: the platform, the product/service description, and the constraints from Step 1. Tell each subagent explicitly not to go past the product/listing page. The agent's own frontmatter already pins it to a fast, inexpensive model at moderate effort (`agents/platform-researcher.md`) — this is mechanical browse-and-extract work, not deep reasoning, so dispatch it as defined rather than at the orchestrator's own model/effort level.
 
 When subagents return, spot-check anything that looks off (a suspiciously high rating with almost no reviews, a price wildly out of line with the others) before folding it into the comparison, rather than trusting every report at face value. Once every confirmed platform has reported back, mark `platforms_researched: true`.
 

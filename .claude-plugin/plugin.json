@@ -1,6 +1,6 @@
 {
   "name": "smart-shopper",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Browser-based shopping copilot: learns your region once, discovers where people actually buy a category when you don't name a site, confirms a platform shortlist with you, researches it in parallel, hunts coupons, learns your platform/payment don'ts from behavior, and prepares checkout after you pick — never placing an order.",
   "author": {
     "name": "Shubham Mantri"
