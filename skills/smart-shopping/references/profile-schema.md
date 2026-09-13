@@ -6,6 +6,7 @@ The profile lives at `.claude/smart-shopper.local.md` in the project directory t
 
 Before writing anything to this file, apply one test: **would this fact matter in a completely unrelated shopping session next month?**
 
+- "User is shopping from India" — yes, durable, save it. This is the single most useful fact for filtering out irrelevant regional sites.
 - "User's delivery pincode is 560037" — yes, durable, save it.
 - "User is looking for a washing machine pressure pump" — no, that's this session's task, not a durable fact. Do not save it.
 - "User holds an HDFC Millennia card with 5% capped cashback on Amazon" — yes, durable, save it.
@@ -15,6 +16,7 @@ Before writing anything to this file, apply one test: **would this fact matter i
 
 ```yaml
 ---
+region: ""            # e.g. "India", "United States" — decides which regional storefronts and coupon sources are even relevant
 full_name: ""
 phone: ""
 addresses:
@@ -28,8 +30,13 @@ payment_methods:
     network: ""          # e.g. "Visa", "Amazon Pay ICICI"
     type: ""             # "credit" | "debit"
     rewards_note: ""     # plain description of the cashback/reward terms, not the card itself
+    preferred: false     # set true once there's a clear signal this is the one to default to
 preferred_marketplaces: []   # e.g. ["amazon", "flipkart"] — only what the user actually uses
 preferred_coupon_sites: []   # optional, only if the user names specific ones
+platform_preferences:
+  - platform: ""
+    sentiment: ""        # "prefer" | "avoid"
+    reason: ""           # short, concrete — what happened that caused this
 budget_style: ""        # "cheapest" | "balanced" | "premium"
 notes: ""                # short freeform durable preferences
 last_updated: ""
@@ -52,6 +59,7 @@ If asked to save any of the above, decline and explain that this profile only st
 
 ```markdown
 ---
+region: India
 full_name: Shubham Mantri
 phone: "8949413639"
 addresses:
@@ -65,12 +73,18 @@ payment_methods:
     network: Visa
     type: credit
     rewards_note: 5% cashback on Amazon/Flipkart, capped at ₹1000/month combined across categories
+    preferred: false
   - label: Amazon Pay ICICI
     network: Amazon Pay ICICI
     type: credit
     rewards_note: 5% cashback on Amazon for Prime members, uncapped, credited as Amazon Pay balance
+    preferred: true
 preferred_marketplaces: [amazon, flipkart]
 preferred_coupon_sites: []
+platform_preferences:
+  - platform: Meesho
+    sentiment: avoid
+    reason: Said a seller was unreliable there and asked not to be shown it again
 budget_style: balanced
 notes: Prefers branded over generic for appliances; renting, avoids anything needing plumbing/permanent installation.
 last_updated: "2026-09-13"

@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "smart-shopper",
-      "description": "Browser-based shopping copilot that dispatches a subagent per platform via Claude in Chrome, hunts coupons, checks card cashback, remembers reusable profile details locally, and never places an order.",
+      "description": "Browser-based shopping copilot: learns your region once, discovers where people actually buy a category when you don't name a site, confirms a platform shortlist with you, researches it in parallel, hunts coupons, learns your platform/payment don'ts from behavior, and prepares checkout after you pick — never placing an order.",
       "source": ".",
       "category": "productivity"
     }

@@ -14,12 +14,14 @@ mkdir -p "$STATE_DIR"
 
 cat > "$STATE_FILE" <<'EOF'
 ---
+region: ""
 full_name: ""
 phone: ""
 addresses: []
 payment_methods: []
 preferred_marketplaces: []
 preferred_coupon_sites: []
+platform_preferences: []
 budget_style: ""
 notes: ""
 last_updated: ""

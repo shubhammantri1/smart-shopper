@@ -2,6 +2,8 @@
 
 Discover coupons per request rather than relying on a fixed list of coupon sites. A hardcoded list goes stale fast and does not generalize across regions or retailers — search for it fresh each time instead.
 
+Run this for the strongest 3-5 candidates across the confirmed platforms — not only a single "winning" one — since the user hasn't picked their final choice yet at this point in the flow and the sorted recommendation list needs real, coupon-adjusted prices to be worth showing. Skip it only for candidates that are clearly out of contention (far pricier and no better reviewed than options already ahead of them).
+
 ## Step 1: Discover candidate coupon sources
 
 Run a web search for the specific retailer and category, for example:
