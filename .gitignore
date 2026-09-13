@@ -4,3 +4,7 @@
 
 # OS cruft
 .DS_Store
+
+# Python bytecode from running the hook scripts
+__pycache__/
+*.pyc

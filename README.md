@@ -82,12 +82,19 @@ See `skills/smart-shopping/references/profile-schema.md` for the exact schema an
   scoped to research only, never past a product/listing page; runs on a fast, inexpensive
   model (`haiku`) at moderate effort rather than the orchestrator's own model, since this
   is mechanical browse-and-extract work, not deep reasoning
-- `hooks/` — a Stop hook that deterministically blocks a shopping response from ending
-  until the task's mandatory steps (platform research, coupon search, payment-method
-  check, delivering the recommendation) have actually happened, unless the flow is
-  legitimately paused waiting on the user. This exists because "please remember to
-  check coupons" is an instruction a model can forget under pressure — a hook running
-  outside the model's context can't be skipped the same way.
+- `hooks/` — two hooks that enforce what the prompt alone can't guarantee:
+  - a **Stop hook** that blocks a shopping response from ending until the task's
+    mandatory steps (platform research, coupon search, payment-method check,
+    delivering the recommendation) have actually happened, unless the flow is
+    legitimately paused waiting on the user
+  - a **PreToolUse hook** that watches every `platform-researcher` dispatch and denies
+    one arriving long after the first in its batch while platforms remain
+    undispatched — the timing signature of dispatching them one at a time instead of
+    together in parallel, which is slower for no benefit
+
+  Both exist because "please remember to do X" is an instruction a model can drift
+  away from under pressure — a hook running outside the model's context can't be
+  skipped the same way.
 
 ## License
 

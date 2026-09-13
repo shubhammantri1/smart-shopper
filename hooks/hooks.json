@@ -1,13 +1,28 @@
 {
-  "Stop": [
-    {
-      "hooks": [
-        {
-          "type": "command",
-          "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/scripts/verify-shopping-checklist.sh",
-          "timeout": 10
-        }
-      ]
-    }
-  ]
+  "description": "Enforces the smart-shopping task checklist and parallel subagent dispatch",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/enforce-parallel-dispatch.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/scripts/verify-shopping-checklist.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
 }

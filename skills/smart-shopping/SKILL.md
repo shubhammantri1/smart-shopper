@@ -1,7 +1,7 @@
 ---
 name: smart-shopping
 description: This skill should be used when the user asks to "find me the best", "compare prices for", "help me buy", "shop for", "find a good deal on", "search Amazon/Flipkart/[any store] for", "hunt for coupons", "find a discount code", or otherwise wants to research, compare, and shop for a product or service using the browser. Also use when the user wants to save or update their shopping profile (name, region, address, card type, preferences).
-version: 0.5.0
+version: 0.6.0
 ---
 
 # Smart Shopping
@@ -25,10 +25,15 @@ payment_method_checked: false
 platforms_researched: false
 coupon_search_attempted: false
 recommendation_delivered: false
+platforms_confirmed_count: 0
+dispatch_seen_count: 0
+dispatch_batch_first_ts: 0
 ---
 ```
 
 A Stop hook reads this file. It always allows the turn to end while `waiting_for_user: true` (there are several legitimate points below where the right move is to ask the user something and wait). Whenever `waiting_for_user` is false, it blocks the turn from ending until the other fields are true — mark a field true only once that step has genuinely happened; marking it true without doing the work defeats the point of the check.
+
+A separate PreToolUse hook watches every `platform-researcher` dispatch and denies one that arrives long after the first one in its batch while platforms remain undispatched — the signature of dispatching them one at a time instead of together. See Step 3.
 
 Set `waiting_for_user: true` immediately before ending a turn to ask the user anything, and set it back to `false` once their reply is being acted on.
 
@@ -46,7 +51,16 @@ Skipped whenever the user already named specific platforms (Step 1's hard rule a
 
 ## Step 3: Dispatch one subagent per confirmed platform
 
-For each platform on the confirmed list (from Step 1's named platforms or Step 2's user-selected shortlist), launch one `platform-researcher` subagent — as a single batch of parallel Agent tool calls in the same response, not one after another. Give each a focused, self-contained prompt: the platform, the product/service description, and the constraints from Step 1. Tell each subagent explicitly not to go past the product/listing page. The agent's own frontmatter already pins it to a fast, inexpensive model at moderate effort (`agents/platform-researcher.md`) — this is mechanical browse-and-extract work, not deep reasoning, so dispatch it as defined rather than at the orchestrator's own model/effort level.
+Before dispatching anything, set `platforms_confirmed_count` in the task checklist to the number of platforms on the confirmed list, and reset `dispatch_seen_count: 0` and `dispatch_batch_first_ts: 0`.
+
+**This step must always be parallel, never sequential — it is the entire reason subagents are used here instead of researching each site directly.** Launch one `platform-researcher` subagent per confirmed platform as a single batch of Agent tool calls inside the exact same assistant message:
+
+- **Right:** one message containing three Agent calls — for Amazon, Flipkart, and Meesho — sent together, all at once.
+- **Wrong:** one message with a single Agent call for Amazon, waiting for its result, then a separate message with a single Agent call for Flipkart, then another for Meesho. This is slower for no benefit and defeats the entire point of using subagents.
+
+Give each a focused, self-contained prompt: the platform, the product/service description, and the constraints from Step 1. Tell each subagent explicitly not to go past the product/listing page. The agent's own frontmatter already pins it to a fast, inexpensive model at moderate effort (`agents/platform-researcher.md`) — this is mechanical browse-and-extract work, not deep reasoning, so dispatch it as defined rather than at the orchestrator's own model/effort level.
+
+A PreToolUse hook (`hooks/scripts/enforce-parallel-dispatch.py`) is watching this: if a dispatch call arrives long after the first one in the batch while platforms remain undispatched, it denies the call and says so — that means the batch went out sequentially by mistake. Treat a denial as the signal to reissue every remaining platform together in one message, not to retry them one by one again.
 
 When subagents return, spot-check anything that looks off (a suspiciously high rating with almost no reviews, a price wildly out of line with the others) before folding it into the comparison, rather than trusting every report at face value. Once every confirmed platform has reported back, mark `platforms_researched: true`.
 
@@ -91,3 +105,4 @@ At the end of the task, do one last pass for anything durable that happened but 
 ### Enforcement
 
 - **`hooks/hooks.json`** + **`hooks/scripts/verify-shopping-checklist.sh`** — a Stop hook that blocks the response from ending while the Step 0 checklist has an incomplete mandatory step and the flow isn't legitimately waiting on the user
+- **`hooks/scripts/enforce-parallel-dispatch.py`** — a PreToolUse hook that denies a `platform-researcher` dispatch call arriving long after the first one in its batch while platforms remain undispatched, catching sequential dispatch that slipped past Step 3's instructions
