@@ -1,0 +1,6 @@
+# User-local shopping profile — never commit this. It's personal data by design.
+.claude/*.local.md
+.claude/*.local.json
+
+# OS cruft
+.DS_Store

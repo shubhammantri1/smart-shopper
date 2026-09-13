@@ -1,0 +1,17 @@
+{
+  "name": "smart-shopper",
+  "version": "0.1.0",
+  "description": "Browser-based shopping copilot that searches, compares, and hunts coupons across sites via Claude in Chrome, remembers reusable profile details locally, and always stops before payment.",
+  "author": {
+    "name": "Shubham Mantri"
+  },
+  "license": "MIT",
+  "keywords": [
+    "shopping",
+    "e-commerce",
+    "browser-automation",
+    "coupons",
+    "price-comparison",
+    "claude-in-chrome"
+  ]
+}

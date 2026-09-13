@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "smart-shopper-marketplace",
+  "description": "Self-hosted marketplace for the smart-shopper plugin: a browser-based shopping copilot for Claude Code.",
+  "owner": {
+    "name": "Shubham Mantri"
+  },
+  "plugins": [
+    {
+      "name": "smart-shopper",
+      "description": "Browser-based shopping copilot that searches, compares, and hunts coupons across sites via Claude in Chrome, remembers reusable profile details locally, and always stops before payment.",
+      "source": ".",
+      "category": "productivity"
+    }
+  ]
+}
